@@ -15,11 +15,10 @@ import base64
 import json
 import cv2
 import numpy as np
-import json
 
 S3_BUCKET = os.environ['S3_BUCKET'] if 'S3_BUCKET' in os.environ else 'face-recognition-ganji'
 MODEL_PATH = os.environ['MODEL_PATH'] if 'MODEL_PATH' in os.environ else 'face-align/shape_predictor_5_face_landmarks.dat'
-print('Downloading predictor 5 face landmarks dat file...')
+print('Downloading shape_predictor_5_face_landmarks.dat...')
 
 s3 = boto3.client('s3')
 
@@ -33,67 +32,53 @@ try:
 except Exception as e:
     print(repr(e))
     raise(e)
-	
+
 face_detector = dlib.get_frontal_face_detector()
 shape_predictor = dlib.shape_predictor(predictor_landmark_path)
 
 def align_faceimage(event, context):
-	try:
-		content_type_header = event['headers']['content-type']
+    try:
+        content_type_header = event['headers']['content-type']
         print(event['body'])
         body = base64.b64decode(event["body"])
         print('BODY LOADEED')
         picture = decoder.MultipartDecoder(body, content_type_header).parts[0]
-        # convert into numpy array 
+        # convert into numpy array
         # Load the image using Dlib
-        img_np = dlib.load_rgb_image(io.BytesIO(image_bytes=picture.content))
-        
+        # img_np = dlib.load_rgb_image(io.BytesIO(image_bytes=picture.content))
         # Ask the detector to find the bounding boxes of each face. The 1 in the
         # second argument indicates that we should upsample the image 1 time. This
         # will make everything bigger and allow us to detect more faces.
         detected_faces = face_detector(img_np, 1)
         num_faces = len(detected_faces)
         if num_faces == 0:
-            return {
-                "statusCode": 200,
-                "headers": {
-                    'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin': '*',
-                    "Access-Control-Allow-Credentials": True
-                },
-                "body": json.dumps({"error": "Sorry, there were no faces found in the picture uploaded"})
-            }
-    except Exception as e:
-        print(repr(e))
         return {
-            "statusCode": 500,
+            "statusCode": 200,
             "headers": {
                 'Content-Type': 'application/json',
                 'Access-Control-Allow-Origin': '*',
                 "Access-Control-Allow-Credentials": True
             },
-            "body": json.dumps({"error": repr(e)})
+            "body": json.dumps({"error": "Sorry, there were no faces found in the picture uploaded"})
         }
-	
+
         # Find the 5 face landmarks we need to do the alignment.
         faces = dlib.full_object_detections()
         for detection in detected_faces:
             faces.append(shape_predictor(img_np, detection))
-
-        #Get the aligned face images
-        # Optionally: 
-        #- images = dlib.get_face_chips(img, faces, size=160, padding=0.25)
-        #images = dlib.get_face_chips(img, faces, size=320)
-        #for image in images:
-        #    window.set_image(image)
-        #    dlib.hit_enter_to_continue()
-        
-        #Takes an image and a full_object_detection that references a face in that image and returns the face as a Numpy array representing the image.
-        #The face will be rotated upright and scaled to 150x150 pixels or with the optional specified size and padding.
-        image_aligned_np = dlib.get_face_chip(img_np, faces[0])
-        image_to_bytes=base64.b64encode(image_aligned_np)
-        #json.dumps(arr.tolist())
-        return {
+            #Get the aligned face images
+            # Optionally:
+            # #- images = dlib.get_face_chips(img, faces, size=160, padding=0.25)
+            # #images = dlib.get_face_chips(img, faces, size=320)
+            # #for image in images:
+            #    window.set_image(image)
+            #    dlib.hit_enter_to_continue()
+            #    #Takes an image and a full_object_detection that references a face in that image and returns the face as a Numpy array representing the image.
+            #    #The face will be rotated upright and scaled to 150x150 pixels or with the optional specified size and padding.
+            image_aligned_np = dlib.get_face_chip(img_np, faces[0])
+            image_to_bytes=base64.b64encode(image_aligned_np)
+            #json.dumps(arr.tolist())
+            return {
                 "statusCode": 200,
                 "headers": {
                     'Content-Type': 'application/json',
@@ -102,8 +87,18 @@ def align_faceimage(event, context):
                 },
                 "body": json.dumps(image_to_bytes)
             }
-        # at receiving end convert to np.array(json.loads(arr))
-
+            # at receiving end convert to np.array(json.loads(arr))
+    except Exception as e:
+        print(repr(e))
+        return {
+        "statusCode": 500,
+        "headers": {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+            "Access-Control-Allow-Credentials": True
+        },
+        "body": json.dumps({"error": repr(e)})
+        }
 def lambda_handler_facealign(event, context):
     res = list()
     assert event.get('httpMethod') == 'POST'
@@ -111,9 +106,9 @@ def lambda_handler_facealign(event, context):
         #the content of the body is encoded in base64 format, so it can be decoded using the following function:
         event['body'] = base64.b64decode(event['body'])
     except :
-         return {
-        'statusCode': 400,
-        'body': json.dumps(res)
+        return {
+            'statusCode': 400,
+            'body': json.dumps(res)
         }
 
     if event['path'] == '/predict' :
@@ -121,15 +116,15 @@ def lambda_handler_facealign(event, context):
     elif event['path'] == '/object_detection' :
         infer_func = predict_objects
     else:
-         return {
-        'statusCode': 404,
-        'body': json.dumps(res)
+        return {
+            'statusCode': 404,
+            'body': json.dumps(res)
         }
 
     #content_type = event.get('headers', {"content-type" : ''}).get('content-type')
     #the library request toolbelt provides some tools to decode multipart/form-data using the boundary of each part, 
     #then it’s possible to iterate in each part using the following function:
-    
+
     if 'multipart/form-data' in content_type  :
 
         # convert to bytes if need
@@ -149,9 +144,9 @@ def lambda_handler_facealign(event, context):
                         img = Image.open(img_io)
                         img = cv2.cvtColor(np.array(img), cv2.COLOR_BGR2RGB)
                         images = align_func(img)
-                        image =   images[0]                      
+                        image =   images[0]
                         image_to_bytes=base64.b64encode(image)
-                        
+
                         res.append(image_to_bytes.tolist())
                         """
                         return {
@@ -165,7 +160,7 @@ def lambda_handler_facealign(event, context):
                             }
                         """
 
-                        
+
                     except Exception as e:
                         print(e)
                         """
@@ -188,7 +183,7 @@ def lambda_handler_facealign(event, context):
                         img = cv2.imdecode(img, cv2.IMREAD_COLOR)
                         img = cv2.cvtColor(img , cv2.COLOR_BGR2RGB)
                         images = align_func(img)
-                        image =   images[0]                      
+                        image =   images[0]
                         image_to_bytes=base64.b64encode(image)
                         res.append(image_to_bytes.tolist())
                         #json.dumps(arr.tolist())
@@ -234,30 +229,30 @@ def lambda_handler_facealign(event, context):
                             }
                     """
                     res.append({"error": 'Bad field name in form-data'})
-                 
-    
+
+
     return {
-            'headers': {
-                "Access-Control-Allow-Origin": "*",
-                "Access-Control-Allow-Headers": "Content-Type",
-                "Access-Control-Allow-Methods": "OPTIONS,POST"
-                },
-            'statusCode': 200,
-            'body': json.dumps(res)
-            }
-    
+        'headers': {
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Headers": "Content-Type",
+            "Access-Control-Allow-Methods": "OPTIONS,POST"
+        },
+        'statusCode': 200,
+        'body': json.dumps(res)
+    }
+
 def align_func(img):
     # Ask the detector to find the bounding boxes of each face. The 1 in the
     # second argument indicates that we should upsample the image 1 time. This
     # will make everything bigger and allow us to detect more faces.
     detected_faces = face_detector(img, 1)
     num_faces = len(detected_faces)
-    
+
     #shape detector of faces
     faces = dlib.full_object_detections()
     for detection in detected_faces:
         faces.append(shape_predictor(img, detection))
-    
+
     # Get the aligned face images
     # Optionally: 
     #- images = dlib.get_face_chips(img, faces, size=160, padding=0.25)
