@@ -45,22 +45,22 @@ def align_faceimage(event, context):
         picture = decoder.MultipartDecoder(body, content_type_header).parts[0]
         # convert into numpy array
         # Load the image using Dlib
-        # img_np = dlib.load_rgb_image(io.BytesIO(image_bytes=picture.content))
+        img_np = dlib.load_rgb_image(io.BytesIO(image_bytes=picture.content))
         # Ask the detector to find the bounding boxes of each face. The 1 in the
         # second argument indicates that we should upsample the image 1 time. This
         # will make everything bigger and allow us to detect more faces.
         detected_faces = face_detector(img_np, 1)
         num_faces = len(detected_faces)
         if num_faces == 0:
-        return {
-            "statusCode": 200,
-            "headers": {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*',
-                "Access-Control-Allow-Credentials": True
-            },
-            "body": json.dumps({"error": "Sorry, there were no faces found in the picture uploaded"})
-        }
+            return {
+                    "statusCode": 200,
+                    "headers": {
+                        'Content-Type': 'application/json',
+                        'Access-Control-Allow-Origin': '*',
+                        "Access-Control-Allow-Credentials": True
+                        },
+                    "body": json.dumps({"error": "Sorry, there were no faces found in the picture uploaded"})
+                    }
 
         # Find the 5 face landmarks we need to do the alignment.
         faces = dlib.full_object_detections()
@@ -79,26 +79,26 @@ def align_faceimage(event, context):
             image_to_bytes=base64.b64encode(image_aligned_np)
             #json.dumps(arr.tolist())
             return {
-                "statusCode": 200,
-                "headers": {
-                    'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin': '*',
-                    "Access-Control-Allow-Credentials": True
-                },
-                "body": json.dumps(image_to_bytes)
-            }
+                    "statusCode": 200,
+                    "headers": {
+                        'Content-Type': 'application/json',
+                        'Access-Control-Allow-Origin': '*',
+                        "Access-Control-Allow-Credentials": True
+                        },
+                    "body": json.dumps(image_to_bytes)
+                    }
             # at receiving end convert to np.array(json.loads(arr))
     except Exception as e:
         print(repr(e))
         return {
-        "statusCode": 500,
-        "headers": {
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*',
-            "Access-Control-Allow-Credentials": True
-        },
-        "body": json.dumps({"error": repr(e)})
-        }
+                "statusCode": 500,
+                "headers": {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*',
+                    "Access-Control-Allow-Credentials": True
+                    },
+                "body": json.dumps({"error": repr(e)})
+                }
 def lambda_handler_facealign(event, context):
     res = list()
     assert event.get('httpMethod') == 'POST'
