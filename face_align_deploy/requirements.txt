@@ -1,0 +1,8 @@
+dlib
+Opencv-python-headless
+numpy
+requests_toolbelt
+
+
+
+
