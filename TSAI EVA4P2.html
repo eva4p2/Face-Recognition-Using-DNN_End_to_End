@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<title>TSAI EVA4P2</title>
+<h1 class="header1">TSAI Page of EVA4P2 Group</h1>
+<h2>TSAI is The School Of AI run by  Rohan Sharavan. Rohan's perspectve is to build India a better place to live and work for our upcoming generations.</h2>
+<h3>Under TSAI we have been trained on the newest cutting edge CNN & DNN models. These models have proven to be SOTA models in specific domains. We have created this page to give a glance to the world of how we started using SOTA to resolve some domain oriented problems</h3>
+<h4 class="header2">Group Members : <a href="https://www.linkedin.com/in/rohitrnath/" target="_blank">Rohit R Nath</a>, <a href="https://www.linkedin.com/in/ganji-rao-0b58717/" target="_blank">Ganji Rao</a>,  <a href="https://www.linkedin.com/in/varinder-singh-sandhu-4375516b/" target="_blank">Varinder Sandhu</a> </h4>
+</head>
+<body>
+	<p> Our journey started with deploying a pretrained model on MobileNetV2 on AWS Lambda. We used pytorch preatrainded MobilenetV2 model saved it's weights into S3 Bucket. Model file code is deployed into lamda as handle.py with an active API gateway which listens to a HTTP endpoint accepts a POST request with an image as a Http message body to classify the image.</p>
+<div id="restnet34" class="large-12 cell">
+<form action="/action_page.php">
+	<p class="sessionHeader">Session 1</p>
+  <label class ="label" for="resnet34FileUpload">Deploying pre-trained Pytorch models in AWS-lambda using serverless and docker. AWS Services used - lambda, S3, API Gateway, S3 and CloudFormation. </label><br><br>
+  <input type="file" id="resnet34FileUpload" name="resnet34FileUpload" class="browseButton">
+  <input type="button" id="resnet34FileUploadBtn" class="button" value="Classify Image">
+</form>
+<p id="resnetresult"></p>
+</div>
+<div id="mobilenetV2" class="large-4 cell">
+<form action="/action_page.php">
+	<p class="sessionHeader">Session 2</p>
+  <label class ="label" for="mobilenetv2FleUpload">Deploying pre-trained Pytorch models in AWS-lambda using serverless and docker. AWS Services used - lambda, S3, API Gateway, S3 and CloudFormation. </label><br><br>
+  <input type="file" id="mobilenetv2FileUpload" name="mobilenetv2FleUpload" class="browseButton">
+  <input type="button" id="mobilenetv2FleUploadBtn" class="button" value="Classify Image">
+</form>
+<p id="mobilenetv2result"></p>
+</div>
+<div id="dlib" class="large-4 cell">
+<form action="/action_page.php">
+	<p class="sessionHeader">Session 3</p>
+  <label class ="label" for="dlibFileUpload">Deploying pre-trained Pytorch models in AWS-lambda using serverless and docker. AWS Services used - lambda, S3, API Gateway, S3 and CloudFormation. </label><br><br>
+  <input type="file" id="facerecognitionFileUpload" name="facerecognitionFileUpload" class="browseButton">
+  <img id="ItemPreview" src="">
+  <output id="filePreview"></output>
+  <input type="button" id="facerecognitionFileUploadBtn" class="button" value="Detect & Align Face">
+</form>
+<p id="facerecognitionresult"></p>
+</div>
+</body>
+<script src="js/jquery-3.3.1.min.js"></script>
+<script src="js/upload.js"></script>
+</html>
