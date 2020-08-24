@@ -28,6 +28,10 @@ provider:
   stage: dev
   region: ap-south-1
   timeout: 60
+  apiGateway:
+    binaryMediaTypes:
+      - '*/*'
+      - multipart/form-data
   environment:
           S3_BUCKET: eva4p2
           MODEL_PATH: shape_predictor_68_face_landmarks.dat 
@@ -88,17 +92,35 @@ package:
     - test/**
     - __pycache__/**
     - .pytest_cache/**
-    - model/**
+    #- model/**
+    - test/**
+    - .venv/**
+    - .vscode/**
+    - ./serverless/**
+    - .gitignore
+    - .editorconfig
+    - .DS_Store
+    - Readme.md
 
                 
 functions:
-  classifyImage:
-    handler: handler.align_faceimage
+  face_align:
+    handler: handler.face_align
     memorySize: 3008
     timeout: 60
     events:
       - http:
           path: face-align
+          method: post
+          cors: true
+
+  face_swap:
+    handler: handler.face_swap
+    memorySize: 3008
+    timeout: 60
+    events:
+      - http:
+          path: face-swap
           method: post
           cors: true
                     #- cloudwatchLog: '/aws/lambda/resnet_classify'

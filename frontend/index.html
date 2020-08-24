@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<title>TSAI EVA4P2</title>
+<h1 class="header1">TSAI Page of EVA4P2 Group</h1>
+<h2>TSAI is The School Of AI run by  Rohan Sharavan. Rohan's perspectve is to build India a better place to live and work for our upcoming generations.</h2>
+<h3>Under TSAI we have been trained on the newest cutting edge CNN & DNN models. These models have proven to be SOTA models in specific domains. We have created this page to give a glance to the world of how we started using SOTA to resolve some domain oriented problems</h3>
+<h4 class="header2">Group Members : <a href="https://www.linkedin.com/in/rohitrnath/" target="_blank">Rohit R Nath</a>, <a href="https://www.linkedin.com/in/ganji-rao-0b58717/" target="_blank">Ganji Rao</a>,  <a href="https://www.linkedin.com/in/varinder-singh-sandhu-4375516b/" target="_blank">Varinder Sandhu</a> </h4>
+</head>
+<body>
+	<p> Our journey started with deploying a pretrained model on MobileNetV2 on AWS Lambda. We used pytorch preatrainded MobilenetV2 model saved it's weights into S3 Bucket. Model file code is deployed into lamda as handle.py with an active API gateway which listens to a HTTP endpoint accepts a POST request with an image as a Http message body to classify the image.</p>
+<div id="restnet34" class="large-12 cell">
+<form action="/action_page.php">
+	<p class="sessionHeader">Restner34 on Imagenet</p>
+  <label class ="label" for="resnet34FileUpload">Deployed pre-trained RESNET34 Pytorch model in AWS-lambda using serverless and docker using lambda, S3, API Gateway, S3 and CloudFormation AWS services. RESNET34 helps classifying objects among more than 100 classes.</label><br><br>
+  <input type="file" id="resnet34FileUpload" name="resnet34FileUpload" class="browseButton">
+  <output id="filePreview1"></output>
+  <input type="button" id="resnet34FileUploadBtn" class="button" value="Classify Image">
+</form>
+<p id="resnetresult"></p>
+</div>
+<div id="mobilenetV2" class="large-4 cell">
+<form action="/action_page.php">
+	<p class="sessionHeader">Drone Classification</p>
+  <label class ="label" for="mobilenetv2FleUpload">Deployed train-transfer MobileNetV2 Pytorch model in AWS-lambda using serverless and docker using lambda, S3, API Gateway, S3 and CloudFormation AWS services. This model is train transfered on 4 custom dataset includes : Flying Birds, Small Quadcopters, Large Quadcopters and Winged Drones.</label><br><br>
+  <input type="file" id="mobilenetv2FileUpload" name="mobilenetv2FleUpload" class="browseButton">
+  <output id="filePreview2"></output>
+  <input type="button" id="mobilenetv2FleUploadBtn" class="button" value="Classify Image">
+</form>
+<p id="mobilenetv2result"></p>
+</div>
+<div id="dlib" class="large-4 cell">
+<form action="/action_page.php">
+	<p class="sessionHeader">Face Align</p>
+  <label class ="label" for="dlibFileUpload">Deployed pre-trained Dlib C++ model in AWS-lambda using serverless and docker using lambda, S3, API Gateway, S3 and CloudFormation AWS services. Dlib does Face Alignment and Facial Recognitions by drawing landmarks on human faces. One of the SOTA model used for Facial Recognition and related applications.</label><br><br>
+  <input type="file" id="facerecognitionFileUpload" name="facerecognitionFileUpload" class="browseButton">
+  <img id="ItemPreview" src="">
+  <output id="filePreview"></output>
+  <input type="button" id="facerecognitionFileUploadBtn" class="button" value="Detect & Align Face">
+</form>
+<p id="facerecognitionresult"></p>
+<img id="facealign" src="" width="150" >
+</div>
+<div id="faceswaping" class="large-4 cell">
+<form action="/action_page.php">
+  <p class="sessionHeader">Face Swap</p>
+  <label class ="label" for="dlibFileUpload">[ADD Description]</label><br><br>
+  <input type="file" id="faceswapSrcFileUpload" name="faceswapSrcFileUpload" class="browseButton">
+  <output id="filePreview3_1"></output>
+  <input type="file" id="faceswapDestFileUpload" name="faceswapDestFileUpload" class="browseButton">
+  <output id="filePreview3_2"></output>
+  <input type="button" id="faceswapFileUploadBtn" class="button" value="Swap Faces">
+</form>
+<p id="faceswapresult"></p>
+<img id="faceswap" src="" width="500" >
+</div>
+</body>
+<script src="js/jquery-3.3.1.min.js"></script>
+<script src="js/upload.js"></script>
+</html>
