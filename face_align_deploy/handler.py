@@ -86,7 +86,7 @@ def face_align(event, context):
                 'Access-Control-Allow-Origin': '*',
                 "Access-Control-Allow-Credentials": True
             },
-            "body": json.dumps({"error: repr(e)"})
+            "body": json.dumps({"error": repr(e)})
         }
 
 
@@ -100,11 +100,11 @@ def face_swap(event, context):
 
         pictures = decoder.MultipartDecoder(body, content_type_header)
 
-        if(lne(pictures.parts) == 2):
+        if(len(pictures.parts) == 2):
             src_img_ndarray = cv2.imdecode(np.frombuffer(pictures.parts[0].content, np.uint8), -1)
             dest_img_ndarray = cv2.imdecode(np.frombuffer(pictures.parts[1].content, np.uint8), -1)
-            err, swapped = FD.faceSwap(src_img_ndarray, dest_img_ndarray)
-            
+            err, swapped_img = FD.faceSwap(src_img_ndarray, dest_img_ndarray)
+
             fields = {"face-swap": base64.b64encode(swapped_img).decode("utf-8") }
 
             return {
@@ -137,5 +137,5 @@ def face_swap(event, context):
                 'Access-Control-Allow-Origin': '*',
                 "Access-Control-Allow-Credentials": True
             },
-            "body": json.dumps({"error: repr(e)"})
+            "body": json.dumps({"error": repr(e)})
         }

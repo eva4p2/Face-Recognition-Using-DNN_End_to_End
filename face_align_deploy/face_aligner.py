@@ -26,9 +26,11 @@ class FaceDetection():
 		aligned_img_encoded = cv2.imencode(".jpg", cv2.cvtColor(alignImage, cv2.COLOR_BGR2RGB))
 		return aligned_img_encoded
 
-	def faceSwap( img_source, img_target):
+	def faceSwap( self, img_source, img_target):
 		points_source = fbc.getLandmarks(self.faceDetector, self.landmarkDetector, img_source)
 		points_target = fbc.getLandmarks(self.faceDetector, self.landmarkDetector, img_target)
+
+		img_source_warped = np.copy(img_target)
 
 		#####################Convex Hull#####################################
 		# Find convex hull
@@ -67,8 +69,8 @@ class FaceDetection():
 
 
 
-		img_source_temp = img_source_display.copy()
-		img_target_temp = img_target_display.copy()
+		img_source_temp = img_source.copy()
+		img_target_temp = img_target.copy()
 
 		tris_source = []
 		tris_target = []
