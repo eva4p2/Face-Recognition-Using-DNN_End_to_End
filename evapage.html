@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+<style>
+body {font-family: Arial, Helvetica, sans-serif;}
+
+.navbar {
+  width: 100%;
+  background-color: #555;
+  overflow: auto;
+}
+
+.navbar a {
+  float: left;
+  padding: 12px;
+  color: white;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+.navbar a:hover {
+  background-color: #000;
+}
+
+.active {
+  background-color: #4CAF50;
+}
+
+@media screen and (max-width: 500px) {
+  .navbar a {
+    float: none;
+    display: block;
+  }
+}
+.float-container {
+    border: 3px solid #fff;
+    padding: 20px;
+    right-margin: 20px;
+	top-margin:20x;
+	display: flex;
+  align-items: center;
+}
+
+.float-child {
+    width: 50%;
+    float: left;
+    padding: 100px;
+    border: 2px solid yellow;
+    background-color: green;
+}  
+
+.resnet {
+    width: 30%;
+    float: left;
+    padding: 20px;
+    border: 12px solid white;
+    background-color: green;
+	text-align: center;
+	
+}  
+
+
+.mobilenet {
+    flex: 1;
+    border: 2px solid white;
+	background-color: blue;
+    margin-right:20px;
+    margin-left:20px;
+    margin-top:20px;
+	margin-bottom:20px;
+    text-align:center;
+}  
+
+.dlib {
+    flex: 1;
+    border: 2px solid white;
+	background-color: orange;
+    margin-right:20px;
+    margin-left:20px;
+    margin-top:20px;
+    text-align:center;
+	margin-bottom:20px;
+}  
+
+.flex-container {
+    display: flex;
+    margin-right:20px;
+    margin-left:20px;
+    margin-top:20px;
+    
+}
+
+.flex-child {
+    flex: 1;
+    border: 2px solid white;
+	background-color: green;
+    margin-right:20px;
+    margin-left:20px;
+    margin-top:20px;
+    text-align:center;
+}  
+
+.flex-child:first-child {
+    margin-right: 20px;
+} 
+</style>
+<body>
+
+
+<div class="navbar">
+  <a class="active" href="#" onclick="home()"><i class="fa fa-fw fa-home"></i> Home</a> 
+  <a href="#" onclick="classification()"><i class="fa fa-fw fa-search"></i> Image Classification</a> 
+  <a href="#" onclick="dlib()"><i class="fa fa-fw fa-envelope"></i> Face Recognition</a> 
+  <a href="#" onclick="about()"><i class="fa fa-fw fa-user"></i> About</a>
+</div>
+
+<div class="grid-container">
+
+<div id="mainblock" class="flex-child">
+<div id="classification" class="flex-child">
+  <div id="restnet34" class="flex-child">
+<form action="/action_page.php">
+	<p class="sessionHeader" style="font-size:20px">Image Classification Using resnet34 model</p>
+  <label class ="label" for="resnet34FileUpload">Deploying pre-trained Pytorch models in AWS-lambda using serverless and docker. AWS Services used - lambda, S3, API Gateway, S3 and CloudFormation. </label><br><br>
+  <input type="file" id="resnet34FileUpload" name="resnet34FileUpload" class="browseButton">
+  <input type="button" id="resnet34FileUploadBtn" class="button" value="Classify Image">
+</form>
+<p id="resnetresult"></p>
+</div>
+
+ <div id="mobilenetV2" class="mobilenet">
+<form action="/action_page.php">
+	<p class="sessionHeader" style="font-size:20px">Image Classification Using mobilenetv2 model</p>
+  <label class ="label" for="mobilenetv2FleUpload">Deploying pre-trained Pytorch models in AWS-lambda using serverless and docker. AWS Services used - lambda, S3, API Gateway, S3 and CloudFormation. </label><br><br>
+  <input type="file" id="mobilenetv2FileUpload" name="mobilenetv2FleUpload" class="browseButton">
+  <input type="button" id="mobilenetv2FleUploadBtn" class="button" value="Classify Image">
+</form>
+<p id="mobilenetv2result"></p>
+</div>
+</div>
+<div id="dlib" class="dlib">
+<form action="/action_page.php">
+	<p class="sessionHeader" style="font-size:20px">Face Recognition using Dlib</p>
+  <label class ="label" for="dlibFileUpload">Deploying pre-trained Pytorch models in AWS-lambda using serverless and docker. AWS Services used - lambda, S3, API Gateway, S3 and CloudFormation. </label><br><br>
+  <input type="file" id="facerecognitionFileUpload" name="facerecognitionFileUpload" class="browseButton">
+  <img id="ItemPreview" src="">
+  <input type="button" id="facerecognitionFileUploadBtn" class="button" value="Detect & Align Face">
+</form>
+<p id="facerecognitionresult"></p>
+</div>
+
+</div>
+<div id="about" class="about">
+<h1 class="header1">TSAI Page of EVA4P2 Group</h1>
+<h2>TSAI is The School Of AI run by  Rohan Sharavan. Rohan's perspectve is to build India a better place to live and work for our upcoming generations.</h2>
+<h3>Under TSAI we have been trained on the newest cutting edge CNN & DNN models. These models have proven to be SOTA models in specific domains. We have created this page to give a glance to the world of how we started using SOTA to resolve some domain oriented problems</h3>
+<h4 class="header2">Group Members : <a href="https://www.linkedin.com/in/rohitrnath/" target="_blank">Rohit R Nath</a>, <a href="https://www.linkedin.com/in/ganji-rao-0b58717/" target="_blank">Ganji Rao</a>,  <a href="https://www.linkedin.com/in/varinder-singh-sandhu-4375516b/" target="_blank">Varinder Sandhu</a> </h4>
+
+	<p> Our journey started with deploying a pretrained model on MobileNetV2 on AWS Lambda. We used pytorch preatrainded MobilenetV2 model saved it's weights into S3 Bucket. Model file code is deployed into lamda as handle.py with an active API gateway which listens to a HTTP endpoint accepts a POST request with an image as a Http message body to classify the image.</p>
+</div>
+
+</div>
+</body>
+<script src="js/lib/jquery-3.5.1.min.js"></script>
+<script src="js/upload.js"></script>
+
+<script>
+
+document.getElementById("about").style.display = "none";
+
+function about(){
+document.getElementById("mainblock").style.display = "none";
+document.getElementById("about").style.display = "block";
+}
+
+function classification(){
+document.getElementById("mainblock").style.display = "block";
+document.getElementById("dlib").style.display = "none";
+document.getElementById("classification").style.display = "block";
+
+document.getElementById("about").style.display = "none";
+
+}
+
+function dlib(){
+document.getElementById("mainblock").style.display = "block";
+document.getElementById("dlib").style.display = "block";
+document.getElementById("classification").style.display = "none";
+
+document.getElementById("about").style.display = "none";
+
+}
+
+function home(){
+document.getElementById("mainblock").style.display = "block";
+document.getElementById("about").style.display = "none";
+document.getElementById("dlib").style.display = "block";
+
+}
+
+</script>
+</html> 
