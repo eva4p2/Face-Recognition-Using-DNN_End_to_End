@@ -40,9 +40,9 @@ function uploadAndSwapFace() {
 	});
 };
 
-function uploadAndRecognizeFace() {
+function uploadAndAlignFace() {
 
-	var fileInput = document.getElementById('facerecognitionFileUpload').files;
+	var fileInput = document.getElementById('facealignmentFileUpload').files;
 	if (!fileInput.length) {
 		return alert('Please choose a file to upload first')
 	}
@@ -72,6 +72,40 @@ function uploadAndRecognizeFace() {
 		alert("There was an error while sending prediction request to Face Recognition model.");
 	});
 };
+
+function uploadAndRecognizeFace() {
+
+	var fileInput = document.getElementById('facerecognitionFileUpload').files;
+	if (!fileInput.length) {
+		return alert('Please choose a file to upload first')
+	}
+	var file = fileInput[0]
+	var filename = file.name;
+	var formData = new FormData()
+	formData.append(filename, file)
+	console.log(filename)
+	
+	$.ajax({
+		async: true,
+		crossDomain: true,
+		method: 'POST',
+		url: 'https://nvtei6hvx5.execute-api.ap-south-1.amazonaws.com/dev/face-align',
+		data: formData,
+		processData: false,
+		contentType: false,
+		mimeType: "multipart/form-data"
+	})
+	.done(function (response){
+		console.log(response);
+		 document.getElementById('facerecognitionresult').textContent = response;
+		//$("#facealign").attr('src', `data:image/png;base64,${JSON.parse(response)["face-aligned"]}`);
+		// document.getElementById('filePreview').innerHTML = ['<img src="', response["face-aligned"]," width="150" />'].join('');
+	})
+	.fail(function(){
+		alert("There was an error while sending prediction request to Face Recognition model.");
+	});
+};
+
 
 function uploadAndClassifyImageUsingResnet() {
 
@@ -137,89 +171,198 @@ function uploadAndClassifyImageUsingMobilenetv2() {
 		alert("There was an error while sending prediction request to Mobilenetv2 model.");
 	});
 };
-function handleFileSelect(evt) {
+
+function handleFileSelectFaceRecognition(evt) {
 	var files = evt.target.files;
 	var f = files[0];
 	var reader = new FileReader();
 	 
 	  reader.onload = (function(theFile) {
 			return function(e) {
-			  document.getElementById('filePreview').innerHTML = ['<img src="', e.target.result,'" title="', theFile.name, '" width="150" />'].join('');
+			  document.getElementById('filePreviewFaceRecognition').innerHTML = ['<img src="', e.target.result,'" title="', theFile.name, '" width="150" />'].join('');
 			};
 	  })(f);
 	   
 	  reader.readAsDataURL(f);
 }
 
-function handleFileSelect3_1(evt) {
+function handleFileSelectFaceAlignment(evt) {
 	var files = evt.target.files;
 	var f = files[0];
 	var reader = new FileReader();
 	 
 	  reader.onload = (function(theFile) {
 			return function(e) {
-			  document.getElementById('filePreview3_1').innerHTML = ['<img src="', e.target.result,'" title="', theFile.name, '" width="150" />'].join('');
+			  document.getElementById('filePreviewFaceAlignment').innerHTML = ['<img src="', e.target.result,'" title="', theFile.name, '" width="150" />'].join('');
 			};
 	  })(f);
 	   
 	  reader.readAsDataURL(f);
 }
 
-function handleFileSelect3_2(evt) {
+function handleFileSelectMobilenet(evt) {
 	var files = evt.target.files;
 	var f = files[0];
 	var reader = new FileReader();
 	 
 	  reader.onload = (function(theFile) {
 			return function(e) {
-			  document.getElementById('filePreview3_2').innerHTML = ['<img src="', e.target.result,'" title="', theFile.name, '" width="150" />'].join('');
+			  document.getElementById('filePreviewMobilenet').innerHTML = ['<img src="', e.target.result,'" title="', theFile.name, '" width="150" />'].join('');
+			};
+	  })(f);
+	   
+	  reader.readAsDataURL(f);
+}
+function handleFileSelectResnet(evt) {
+	var files = evt.target.files;
+	var f = files[0];
+	var reader = new FileReader();
+	 
+	  reader.onload = (function(theFile) {
+			return function(e) {
+			  document.getElementById('filePreviewResnet').innerHTML = ['<img src="', e.target.result,'" title="', theFile.name, '" width="150" />'].join('');
 			};
 	  })(f);
 	   
 	  reader.readAsDataURL(f);
 }
 
-function handleFileSelect2(evt) {
+
+function handleFileSelectFaceSwap_1(evt) {
 	var files = evt.target.files;
 	var f = files[0];
 	var reader = new FileReader();
 	 
 	  reader.onload = (function(theFile) {
 			return function(e) {
-			  document.getElementById('filePreview2').innerHTML = ['<img src="', e.target.result,'" title="', theFile.name, '" width="150" />'].join('');
-			};
-	  })(f);
-	   
-	  reader.readAsDataURL(f);
-}
-function handleFileSelect1(evt) {
-	var files = evt.target.files;
-	var f = files[0];
-	var reader = new FileReader();
-	 
-	  reader.onload = (function(theFile) {
-			return function(e) {
-			  document.getElementById('filePreview1').innerHTML = ['<img src="', e.target.result,'" title="', theFile.name, '" width="150" />'].join('');
+			  document.getElementById('filePreviewFaceSwap_1').innerHTML = ['<img src="', e.target.result,'" title="', theFile.name, '" width="150" />'].join('');
 			};
 	  })(f);
 	   
 	  reader.readAsDataURL(f);
 }
 
+function handleFileSelectFaceSwap_2(evt) {
+	var files = evt.target.files;
+	var f = files[0];
+	var reader = new FileReader();
+	 
+	  reader.onload = (function(theFile) {
+			return function(e) {
+			  document.getElementById('filePreviewFaceSwap_2').innerHTML = ['<img src="', e.target.result,'" title="', theFile.name, '" width="150" />'].join('');
+			};
+	  })(f);
+	   
+	  reader.readAsDataURL(f);
+}
 	
+
 $('#resnet34FileUploadBtn').click(uploadAndClassifyImageUsingResnet);
 $('#mobilenetv2FleUploadBtn').click(uploadAndClassifyImageUsingMobilenetv2);
+$('#facealignmentFileUploadBtn').click(uploadAndAlignFace);
 $('#facerecognitionFileUploadBtn').click(uploadAndRecognizeFace);
+
 $('#faceswapFileUploadBtn').click(uploadAndSwapFace);
 
-document.getElementById('facerecognitionFileUpload').addEventListener('change', handleFileSelect, false);
-document.getElementById('faceswapDestFileUpload').addEventListener('change', handleFileSelect3_2, false);
-document.getElementById('faceswapSrcFileUpload').addEventListener('change', handleFileSelect3_1, false);
-document.getElementById('mobilenetv2FileUpload').addEventListener('change', handleFileSelect2, false);
-document.getElementById('resnet34FileUpload').addEventListener('change', handleFileSelect1, false);
+document.getElementById("about").style.display = "none";
+
+document.getElementById('facerecognitionFileUpload').addEventListener('change', handleFileSelectFaceRecognition, false);
+
+document.getElementById('facealignmentFileUpload').addEventListener('change', handleFileSelectFaceAlignment, false);
+document.getElementById('faceswapDestFileUpload').addEventListener('change', handleFileSelectFaceSwap_2, false);
+document.getElementById('faceswapSrcFileUpload').addEventListener('change', handleFileSelectFaceSwap_1, false);
+document.getElementById('mobilenetv2FileUpload').addEventListener('change', handleFileSelectMobilenet, false);
+document.getElementById('resnet34FileUpload').addEventListener('change', handleFileSelectResnet, false);
 
 $(function() {
     $('a.popper').hover(function() {
         $('#pop').toggle();
     });
 });
+
+function about(){
+document.getElementById("about").style.display = "block";
+document.getElementById("facedetect").style.display = "none";
+document.getElementById("classification").style.display = "none";
+
+}
+
+function facedetect(){
+document.getElementById("facedetect").style.display = "block";
+document.getElementById("classification").style.display = "none";
+document.getElementById("facealignment").style.display = "block";
+document.getElementById("facerecognition").style.display = "block";
+
+document.getElementById("about").style.display = "none";
+
+}
+
+function home(){
+document.getElementById("facedetect").style.display = "block";
+document.getElementById("about").style.display = "none";
+document.getElementById("classification").style.display = "block";
+document.getElementById("resnet34").style.display = "block";
+document.getElementById("mobilenetV2").style.display = "block";
+document.getElementById("facealignment").style.display = "block";
+document.getElementById("facerecognition").style.display = "block";
+document.getElementById("faceswap").style.display = "block";
+
+}
+
+function facealignment(){
+document.getElementById("classification").style.display = "none";
+document.getElementById("about").style.display = "none";
+document.getElementById("facedetect").style.display = "block";
+
+document.getElementById("facealignment").style.display = "block";
+document.getElementById("facerecognition").style.display = "none";
+document.getElementById("faceswap").style.display = "none";
+
+}
+
+
+function faceswap(){
+document.getElementById("classification").style.display = "none";
+document.getElementById("about").style.display = "none";
+document.getElementById("facedetect").style.display = "block";
+
+document.getElementById("facealignment").style.display = "none";
+document.getElementById("facerecognition").style.display = "none";
+document.getElementById("faceswap").style.display = "block";
+
+
+}
+
+
+function facerecognition(){
+document.getElementById("classification").style.display = "none";
+document.getElementById("about").style.display = "none";
+document.getElementById("facedetect").style.display = "block";
+document.getElementById("facealignment").style.display = "none";
+document.getElementById("facerecognition").style.display = "block";
+document.getElementById("faceswap").style.display = "none";
+
+}
+
+function displayclassification(){
+document.getElementById("facedetect").style.display = "none";
+document.getElementById("about").style.display = "none";	
+document.getElementById("classification").style.display = "block";
+document.getElementById("mobilenetV2").style.display = "block";
+document.getElementById("resnet34").style.display = "block";
+
+}
+function resnet(){
+displayclassification();
+document.getElementById("mobilenetV2").style.display = "none";
+document.getElementById("resnet34").style.display = "block";
+
+}
+
+
+function mobilenet(){
+displayclassification();
+document.getElementById("resnet34").style.display = "none";
+document.getElementById("mobilenetV2").style.display = "block";
+
+}
