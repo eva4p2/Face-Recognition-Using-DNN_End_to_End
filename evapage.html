@@ -7,23 +7,65 @@
 body {font-family: Arial, Helvetica, sans-serif;}
 
 .navbar {
-  width: 100%;
-  background-color: #555;
-  overflow: auto;
+  overflow: hidden;
+  background-color: #333;
+  top:0;
 }
 
 .navbar a {
   float: left;
-  padding: 12px;
+  font-size: 16px;
   color: white;
+  text-align: center;
+  padding: 14px 16px;
   text-decoration: none;
-  font-size: 17px;
 }
 
-.navbar a:hover {
-  background-color: #000;
+.dropdown {
+  float: left;
+  overflow: hidden;
 }
 
+.dropdown .dropbtn {
+  font-size: 16px;  
+  border: none;
+  outline: none;
+  color: white;
+  padding: 14px 16px;
+  background-color: inherit;
+  font-family: inherit;
+  margin: 0;
+}
+
+.navbar a:hover, .dropdown:hover .dropbtn {
+  background-color: green;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  float: none;
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+
+.dropdown-content a:hover {
+  background-color: #ddd;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
 .active {
   background-color: #4CAF50;
 }
@@ -52,17 +94,27 @@ body {font-family: Arial, Helvetica, sans-serif;}
 }  
 
 .resnet {
-    width: 30%;
+    width: 100%;
     float: left;
     padding: 20px;
     border: 12px solid white;
-    background-color: green;
+    background-color: rgb(245,245,245);
 	text-align: center;
+	margin-bottom:20px;
+}  
+
+.mobilenet {
+    width: 100%;
+    float: left;
+    padding: 20px;
+    border: 12px solid white;
+    background-color: rgb(245,245,245);
+	text-align: center;
+	margin-bottom:20px;
 	
 }  
 
-
-.mobilenet {
+.mobilenet1 {
     flex: 1;
     border: 2px solid white;
 	background-color: blue;
@@ -76,7 +128,7 @@ body {font-family: Arial, Helvetica, sans-serif;}
 .dlib {
     flex: 1;
     border: 2px solid white;
-	background-color: orange;
+	background-color: rgb(192,192,192);
     margin-right:20px;
     margin-left:20px;
     margin-top:20px;
@@ -88,14 +140,14 @@ body {font-family: Arial, Helvetica, sans-serif;}
     display: flex;
     margin-right:20px;
     margin-left:20px;
-    margin-top:20px;
+    margin-top:40px;
     
 }
 
 .flex-child {
     flex: 1;
     border: 2px solid white;
-	background-color: green;
+	background-color: rgb(192,192,192);
     margin-right:20px;
     margin-left:20px;
     margin-top:20px;
@@ -105,25 +157,50 @@ body {font-family: Arial, Helvetica, sans-serif;}
 .flex-child:first-child {
     margin-right: 20px;
 } 
+
+
 </style>
 <body>
 
 
 <div class="navbar">
-  <a class="active" href="#" onclick="home()"><i class="fa fa-fw fa-home"></i> Home</a> 
-  <a href="#" onclick="classification()"><i class="fa fa-fw fa-search"></i> Image Classification</a> 
-  <a href="#" onclick="dlib()"><i class="fa fa-fw fa-envelope"></i> Face Recognition</a> 
-  <a href="#" onclick="about()"><i class="fa fa-fw fa-user"></i> About</a>
+  
+  <a href="#home" onclick="home()">Home</a>
+  
+  <div class="dropdown">
+    <button class="dropbtn" onclick="displayclassification()">Image Classification 
+      <i class="fa fa-caret-down"></i>
+    </button>
+    <div class="dropdown-content">
+      <a href="#resnet34" onclick="resnet()">Resnet34</a>
+      <a href="#mobilenetv2" onclick="mobilenet()">MobilenetV2</a>
+    </div>
+  </div>
+  
+  <div class="dropdown">
+    <button class="dropbtn"  onclick="facedetect()">Face Recognition 
+      <i class="fa fa-caret-down"></i>
+    </button>
+    <div class="dropdown-content">
+      <a href="#facealignment" onclick="facealignment()">Face Alignment</a>
+      <a href="#facerecognition" onclick="facerecognition()">Face Recognition</a>
+    </div>
+  </div>
+  
+  
+<a href="#About" onclick="about()">About</a>
+  	
+ 	  
+  
 </div>
 
-<div class="grid-container">
+<div class="flex-container">
 
-<div id="mainblock" class="flex-child">
 <div id="classification" class="flex-child">
-  <div id="restnet34" class="flex-child">
+<div id="resnet34" class="resnet">
 <form action="/action_page.php">
 	<p class="sessionHeader" style="font-size:20px">Image Classification Using resnet34 model</p>
-  <label class ="label" for="resnet34FileUpload">Deploying pre-trained Pytorch models in AWS-lambda using serverless and docker. AWS Services used - lambda, S3, API Gateway, S3 and CloudFormation. </label><br><br>
+  <label class ="label" for="resnet34FileUpload"> </label><br><br>
   <input type="file" id="resnet34FileUpload" name="resnet34FileUpload" class="browseButton">
   <input type="button" id="resnet34FileUploadBtn" class="button" value="Classify Image">
 </form>
@@ -133,25 +210,38 @@ body {font-family: Arial, Helvetica, sans-serif;}
  <div id="mobilenetV2" class="mobilenet">
 <form action="/action_page.php">
 	<p class="sessionHeader" style="font-size:20px">Image Classification Using mobilenetv2 model</p>
-  <label class ="label" for="mobilenetv2FleUpload">Deploying pre-trained Pytorch models in AWS-lambda using serverless and docker. AWS Services used - lambda, S3, API Gateway, S3 and CloudFormation. </label><br><br>
+  <label class ="label" for="mobilenetv2FleUpload"></label><br><br>
   <input type="file" id="mobilenetv2FileUpload" name="mobilenetv2FleUpload" class="browseButton">
   <input type="button" id="mobilenetv2FleUploadBtn" class="button" value="Classify Image">
 </form>
 <p id="mobilenetv2result"></p>
 </div>
 </div>
-<div id="dlib" class="dlib">
+
+<div id="facedetect" class="flex-child">
+<div id="facealignment" class="resnet">
 <form action="/action_page.php">
-	<p class="sessionHeader" style="font-size:20px">Face Recognition using Dlib</p>
-  <label class ="label" for="dlibFileUpload">Deploying pre-trained Pytorch models in AWS-lambda using serverless and docker. AWS Services used - lambda, S3, API Gateway, S3 and CloudFormation. </label><br><br>
+	<p class="sessionHeader" style="font-size:20px">Face Alignment using Dlib</p>
+  <label class ="label" for="dlibFileUpload"></label><br><br>
+  <input type="file" id="facealignmentFileUpload" name="facealignmentFileUpload" class="browseButton">
+  <img id="ItemPreview" src="">
+  <input type="button" id="facealignmentFileUploadBtn" class="button" value="Detect & Align Face">
+</form>
+<p id="facealignmentresult"></p>
+</div>
+
+<div id="facerecognition" class="resnet">
+<form action="/action_page.php">
+	<p class="sessionHeader" style="font-size:20px">Face Recognition</p>
+  <label class ="label" for="facereognitionFileUpload"></label><br><br>
   <input type="file" id="facerecognitionFileUpload" name="facerecognitionFileUpload" class="browseButton">
   <img id="ItemPreview" src="">
-  <input type="button" id="facerecognitionFileUploadBtn" class="button" value="Detect & Align Face">
+  <input type="button" id="facerecognitionFileUploadBtn" class="button" value="Predict Face">
 </form>
 <p id="facerecognitionresult"></p>
 </div>
-
 </div>
+
 <div id="about" class="about">
 <h1 class="header1">TSAI Page of EVA4P2 Group</h1>
 <h2>TSAI is The School Of AI run by  Rohan Sharavan. Rohan's perspectve is to build India a better place to live and work for our upcoming generations.</h2>
@@ -171,32 +261,71 @@ body {font-family: Arial, Helvetica, sans-serif;}
 document.getElementById("about").style.display = "none";
 
 function about(){
-document.getElementById("mainblock").style.display = "none";
 document.getElementById("about").style.display = "block";
-}
-
-function classification(){
-document.getElementById("mainblock").style.display = "block";
-document.getElementById("dlib").style.display = "none";
-document.getElementById("classification").style.display = "block";
-
-document.getElementById("about").style.display = "none";
-
-}
-
-function dlib(){
-document.getElementById("mainblock").style.display = "block";
-document.getElementById("dlib").style.display = "block";
+document.getElementById("facedetect").style.display = "none";
 document.getElementById("classification").style.display = "none";
+
+}
+
+function facedetect(){
+document.getElementById("facedetect").style.display = "block";
+document.getElementById("classification").style.display = "none";
+document.getElementById("facealignment").style.display = "block";
+document.getElementById("facerecognition").style.display = "block";
 
 document.getElementById("about").style.display = "none";
 
 }
 
 function home(){
-document.getElementById("mainblock").style.display = "block";
+document.getElementById("facedetect").style.display = "block";
 document.getElementById("about").style.display = "none";
-document.getElementById("dlib").style.display = "block";
+document.getElementById("classification").style.display = "block";
+document.getElementById("resnet34").style.display = "block";
+document.getElementById("mobilenetV2").style.display = "block";
+document.getElementById("facealignment").style.display = "block";
+document.getElementById("facerecognition").style.display = "block";
+}
+
+function facealignment(){
+document.getElementById("classification").style.display = "none";
+document.getElementById("about").style.display = "none";
+document.getElementById("facedetect").style.display = "block";
+
+document.getElementById("facealignment").style.display = "block";
+document.getElementById("facerecognition").style.display = "none";
+
+}
+
+
+function facerecognition(){
+document.getElementById("classification").style.display = "none";
+document.getElementById("about").style.display = "none";
+document.getElementById("facedetect").style.display = "block";
+document.getElementById("facealignment").style.display = "none";
+document.getElementById("facerecognition").style.display = "block";
+}
+
+function displayclassification(){
+document.getElementById("facedetect").style.display = "none";
+document.getElementById("about").style.display = "none";	
+document.getElementById("classification").style.display = "block";
+document.getElementById("mobilenetV2").style.display = "block";
+document.getElementById("resnet34").style.display = "block";
+
+}
+function resnet(){
+displayclassification();
+document.getElementById("mobilenetV2").style.display = "none";
+document.getElementById("resnet34").style.display = "block";
+
+}
+
+
+function mobilenet(){
+displayclassification();
+document.getElementById("resnet34").style.display = "none";
+document.getElementById("mobilenetV2").style.display = "block";
 
 }
 
