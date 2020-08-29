@@ -32,7 +32,7 @@ function uploadAndSwapFace() {
 	.done(function (response){
 		// console.log(response);
 		// document.getElementById('facerecognitionresult').textContent = response;
-		$("#faceswap").attr('src', `data:image/png;base64,${JSON.parse(response)["face-swap"]}`);
+		$("#faceswapimg").attr('src', `data:image/png;base64,${JSON.parse(response)["face-swap"]}`);
 		// document.getElementById('filePreview').innerHTML = ['<img src="', response["face-aligned"]," width="150" />'].join('');
 	})
 	.fail(function(){
