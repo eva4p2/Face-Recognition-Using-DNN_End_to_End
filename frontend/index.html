@@ -178,7 +178,7 @@ body {font-family: Arial, Helvetica, sans-serif;}
   </div>
   
   <div class="dropdown">
-    <button class="dropbtn"  onclick="facedetect()">Face App 
+    <button class="dropbtn"  onclick="faceapp()">Face App 
       <i class="fa fa-caret-down"></i>
     </button>
     <div class="dropdown-content">
@@ -189,25 +189,32 @@ body {font-family: Arial, Helvetica, sans-serif;}
   </div>
   
   <div class="dropdown">
-    <button class="dropbtn"  onclick="facedetect()">Face Recognition 
+    <button class="dropbtn"  onclick="facerecognition()">Face Recognition
       <i class="fa fa-caret-down"></i>
     </button>
     <div class="dropdown-content">
       <a href="#facerecognition" onclick="facerecognition()">Face Recognition</a>
     </div>
   </div>
+  	  
   
-<a href="#About" onclick="about()">About</a>
-  	
- 	  
+  <div class="dropdown">
+    <button class="dropbtn"  onclick="poseestimation()">Pose Estimation
+      <i class="fa fa-caret-down"></i>
+    </button>
+    <div class="dropdown-content">
+      <a href="#poseestimation" onclick="poseestimation()">Pose Estimation</a>
+    </div>
+  </div>
+  
   
 </div>
 
-<div class="flex-container">
+<div class="flex-child">
 
 <div id="classification" class="flex-child">
 <div id="resnet34" class="resnet">
-<form>
+<form action="/action_page.php">
 	<p class="sessionHeader" style="font-size:20px">Image Classification Using resnet34 model</p>
   <output id="filePreviewResnet"></output>
   
@@ -220,7 +227,7 @@ body {font-family: Arial, Helvetica, sans-serif;}
 </div>
 
  <div id="mobilenetV2" class="mobilenet">
-<form">
+<form action="/action_page.php">
 	<p class="sessionHeader" style="font-size:20px">Image Classification Using mobilenetv2 model</p>
   <output id="filePreviewMobilenet"></output>
   
@@ -232,11 +239,14 @@ body {font-family: Arial, Helvetica, sans-serif;}
 </form>
 <p id="mobilenetv2result"></p>
 </div>
+
+
 </div>
 
 <div id="facedetect" class="flex-child">
+
 <div id="facealignment" class="resnet">
-<form">
+<form action="/action_page.php">
 	<p class="sessionHeader" style="font-size:20px">Face Alignment using Dlib</p>
 	<output id="filePreviewFaceAlignment"></output>
   
@@ -251,7 +261,7 @@ body {font-family: Arial, Helvetica, sans-serif;}
 </div>
 
 <div id="faceswap" class="resnet">
-<form>
+<form action="/action_page.php">
 	<p class="sessionHeader" style="font-size:20px">Face Swap</p>
   <label class ="label" for="faceswapSrcFileUpload"></label><br><br>
   
@@ -265,13 +275,12 @@ body {font-family: Arial, Helvetica, sans-serif;}
   <input type="button" id="faceswapFileUploadBtn" class="button" value="Detect, Align & Swap Face">
 </form>
 <p id="faceswapresult"></p>
-<img id="faceswapimg" src="" width="150" >
+<img id="faceswapimg" src="" width="150" > FaceSwap Result: </img>
 </div>
 
-
 <div id="facerecognition" class="resnet">
-<form>
-	<p class="sessionHeader" style="font-size:20px">Face Recognition</p>
+<form action="/action_page.php">
+	<p class="sessionHeader" style="font-size:20px">Face Recognition ..Under deployment</p>
   <output id="filePreviewFaceRecognition"></output>
   
   <label class ="label" for="facereognitionFileUpload"></label><br><br>
@@ -280,8 +289,22 @@ body {font-family: Arial, Helvetica, sans-serif;}
   <input type="button" id="facerecognitionFileUploadBtn" class="button" value="Predict Face">
 </form>
 <p id="facerecognitionresult"></p>
+</div>
+
+<div id="poseestimation" class="resnet">
+<form action="/action_page.php">
+	<p class="sessionHeader" style="font-size:20px">Human Pose Estimation</p>
+  <output id="filePreviewPoseEstimation"></output>
+  
+  <label class ="label" for="poseEstimationFileUpload"></label><br><br>
+  <input type="file" id="poseEstimationFileUpload" name="poseEstimationFileUpload" class="browseButton">
+  
+  <input type="button" id="poseEstimationFileUploadBtn" class="button" value="Estimate Human Pose">
+</form>
+<p id="poseestimationresult"></p>
 
 </div>
+
 </div>
 
 <div id="about" class="about">
